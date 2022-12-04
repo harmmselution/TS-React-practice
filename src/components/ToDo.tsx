@@ -1,13 +1,14 @@
 import { Idata } from "../types/data";
 
 interface ITodoItem extends Idata {
-
+    toggleToDo: (id: number) => void;
+    removeToDo: (id: number) => void;
 }
-export const ToDo: React.FC<ITodoItem> = ({id, value, isComplete}) => {
+export const ToDo: React.FC<ITodoItem> = ({id, value, isComplete,removeToDo,toggleToDo}) => {
   
-    return <>
-    <input type="checkbox" checked = {isComplete}  />
+    return <div>
+    <input type="checkbox" checked = {isComplete} onChange={() => toggleToDo(id)} />
         {value}
-        <button>X</button>
-    </>
+        <button onClick={() => removeToDo(id)}>X</button>
+    </div>
 }
