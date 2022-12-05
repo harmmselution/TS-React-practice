@@ -6,6 +6,8 @@ export const Form: React.FC = () => {
     const [value, setValue] = useState('');
     const [todos, setTodos] = useState<Idata[]>([]);
     const inputRef= useRef<HTMLInputElement>(null);
+    const [isShown, setIsShown] = useState(false);
+
     useEffect(() => {
         if(inputRef.current) inputRef.current.focus();
         console.log(todos);
@@ -32,6 +34,9 @@ export const Form: React.FC = () => {
        }))
         
     }
+    const showNotes = () => {
+        setIsShown(!isShown)
+    }
     const handleEvent: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setValue(e.target.value)
     }
@@ -50,13 +55,14 @@ export const Form: React.FC = () => {
     } 
 
     return <div>
-        <div >
+        <div>
             <input type="text" value={value} onChange={handleEvent} ref = {inputRef}  />
                 <button onClick={addToDo}>Add</button>
-            <ToDoList items={todos} removeToDo={removeToDo} 
+                <button onClick={showNotes}>Show/Hide</button>
+           { isShown? <ToDoList items={todos} removeToDo={removeToDo} 
             toggleToDo={toggleToDo}
             editToDo={editToDo}
-            />
+            /> : ''}
         </div>
     </div>
 }
