@@ -1,5 +1,6 @@
 export interface Idata {
     id: number,
     value: string
-    isComplete: boolean
+    isComplete: boolean,
+    isEdit: boolean
 }

@@ -6,19 +6,31 @@ export const Form: React.FC = () => {
     const [value, setValue] = useState('');
     const [todos, setTodos] = useState<Idata[]>([]);
     const inputRef= useRef<HTMLInputElement>(null);
-    
     useEffect(() => {
-        if(inputRef.current) inputRef.current?.focus();
-    }, [])
+        if(inputRef.current) inputRef.current.focus();
+        console.log(todos);
+    }, [todos])
+
+   
+
     const addToDo = () => {
        if(value) {
         setTodos([...todos, {
             id: Date.now(),
             value: value,
-            isComplete: false
+            isComplete: false,
+            isEdit: false,
         }])
         setValue('');
        }
+    }
+    const editToDo = (index: number): void => {
+       setTodos(todos.map(todo => {
+            if(todo.id !== index) return todo;
+            return {...todo,
+                isEdit: true}
+       }))
+        
     }
     const handleEvent: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setValue(e.target.value)
@@ -41,7 +53,10 @@ export const Form: React.FC = () => {
         <div >
             <input type="text" value={value} onChange={handleEvent} ref = {inputRef}  />
                 <button onClick={addToDo}>Add</button>
-            <ToDoList items={todos} removeToDo={removeToDo} toggleToDo={toggleToDo}/>
+            <ToDoList items={todos} removeToDo={removeToDo} 
+            toggleToDo={toggleToDo}
+            editToDo={editToDo}
+            />
         </div>
     </div>
 }
