@@ -6,10 +6,10 @@ interface ITodoListProps {
     toggleToDo: (id: number) => void;
     removeToDo: (id: number) => void;
     editToDo: (id: number) => void;
-    
+    changeInput: (e:React.ChangeEvent<HTMLInputElement>, index: number) => void;
 }
 
-export const ToDoList: React.FC<ITodoListProps> = ({items,toggleToDo,removeToDo,editToDo}) => {
+export const ToDoList: React.FC<ITodoListProps> = ({items,toggleToDo,removeToDo,editToDo,changeInput}) => {
 
     return (<div>   
         {
@@ -17,7 +17,7 @@ export const ToDoList: React.FC<ITodoListProps> = ({items,toggleToDo,removeToDo,
             <ToDo {...todo} key={todo.id} 
                 removeToDo={removeToDo} toggleToDo={toggleToDo}
                 editToDo={editToDo}
-                
+                changeInput = {changeInput}
             />)
         }
     </div>)
