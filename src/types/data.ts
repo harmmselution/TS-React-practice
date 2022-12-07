@@ -3,4 +3,5 @@ export interface Idata {
     value: string
     isComplete: boolean,
     isEdit: boolean,
+    hasTag: boolean
 }

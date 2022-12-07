@@ -7,9 +7,12 @@ export const Form: React.FC = () => {
     const [todos, setTodos] = useState<Idata[]>([]);
     const inputRef= useRef<HTMLInputElement>(null);
     const [isShown, setIsShown] = useState(false);
-   
-   
+    const [tags, setTags] = useState<Idata[]>([]);
+    
+    const handleTags = () => {
 
+        setTodos(todos => ([...todos]))
+    }
    const changeInput = (e:React.ChangeEvent<HTMLInputElement>, index: number) => {
         setTodos(todos.map(todo => {
             if(todo.id !== index) return todo;
@@ -24,6 +27,7 @@ export const Form: React.FC = () => {
             value: value,
             isComplete: false,
             isEdit: false,
+            hasTag: false,
         }])
         setValue('');
        }
@@ -34,7 +38,7 @@ export const Form: React.FC = () => {
             return {...todo,
                 isEdit: true}
        }))
-    
+       
     }
     const showNotes = () => {
         setIsShown(!isShown)
@@ -46,7 +50,12 @@ export const Form: React.FC = () => {
         setTodos(todos.filter((todo) => todo.id !== id));
 
     }
-
+    const saveEdited = (index: number): void => {
+        setTodos(todos.map(todo => {
+            if(todo.id !== index ) return todo;
+            return {...todo,isEdit:false};
+        }))
+    }
     const toggleToDo = (id:number): void => {
         setTodos(todos.map(todo => {
             if(todo.id !== id) return todo;
@@ -66,8 +75,13 @@ export const Form: React.FC = () => {
             toggleToDo={toggleToDo}
             editToDo={editToDo}
             changeInput={changeInput}
-           
-            /> : ''}
+            saveEdited = {saveEdited}
+            
+            /> : ''}    
         </div>
+        <button onClick={handleTags}>tag</button>
+        <ul>{todos.filter(tag => tag.value.includes("#")).map(todos => <li>{todos.value.substring(todos.value.indexOf("#"),todos.value.length)}</li>) }</ul>
     </div>
+
+
 }
