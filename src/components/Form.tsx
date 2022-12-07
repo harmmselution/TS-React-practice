@@ -7,12 +7,8 @@ export const Form: React.FC = () => {
     const [todos, setTodos] = useState<Idata[]>([]);
     const inputRef= useRef<HTMLInputElement>(null);
     const [isShown, setIsShown] = useState(false);
-    const [tags, setTags] = useState<Idata[]>([]);
     
-    const handleTags = () => {
-
-        setTodos(todos => ([...todos]))
-    }
+    
    const changeInput = (e:React.ChangeEvent<HTMLInputElement>, index: number) => {
         setTodos(todos.map(todo => {
             if(todo.id !== index) return todo;
@@ -65,7 +61,21 @@ export const Form: React.FC = () => {
             }
         }))
     } 
+    let tags: string[]= [];
+    todos
+        .map(tag => {
+            let newtags = tag.value.split(" ");
     
+        newtags.forEach(elem => {
+            if(elem.startsWith("#") && elem.length > 1 ) {
+                tags.push(elem);
+            }
+            
+            console.log(tags)
+        })
+      
+        return tags;
+        })
     return <div>
         <div>
             <input type="text" value={value} onChange={handleEvent} ref = {inputRef}   />
@@ -79,8 +89,9 @@ export const Form: React.FC = () => {
             
             /> : ''}    
         </div>
-        <button onClick={handleTags}>tag</button>
-        <ul>{todos.filter(tag => tag.value.includes("#")).map(todos => <li>{todos.value.substring(todos.value.indexOf("#"),todos.value.length)}</li>) }</ul>
+        <div>список заметок:</div>
+        <ul>
+                {tags.map(tag => <li>{tag}</li>)}</ul>
     </div>
 
 
