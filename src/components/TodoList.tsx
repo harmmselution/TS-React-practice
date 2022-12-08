@@ -3,24 +3,34 @@ import { Idata } from "../types/data";
 import {ToDo} from "./ToDo";
 interface ITodoListProps {
     items: Idata[];
-    toggleToDo: (id: number) => void;
     removeToDo: (id: number) => void;
     editToDo: (id: number) => void;
     changeInput: (e:React.ChangeEvent<HTMLInputElement>, index: number) => void;
     saveEdited: (index: number) => void;
+    filtered: Idata[];
+    filterFlag: boolean;
 }
 
-export const ToDoList: React.FC<ITodoListProps> = ({items,toggleToDo,removeToDo,editToDo,changeInput,saveEdited}) => {
+export const ToDoList: React.FC<ITodoListProps> = ({items,removeToDo,editToDo,changeInput,saveEdited,filtered,filterFlag}) => {
 
     return (<div>   
         {
-            items.map((todo,index) =>  
+           filterFlag?  filtered.map((todo,index) =>  
             <ToDo {...todo} key={todo.id} 
-                removeToDo={removeToDo} toggleToDo={toggleToDo}
+                removeToDo={removeToDo} 
+                editToDo={editToDo}
+                changeInput = {changeInput}
+                saveEdited = {saveEdited}
+            />) :  items.map((todo,index) =>  
+            <ToDo {...todo} key={todo.id} 
+                removeToDo={removeToDo} 
                 editToDo={editToDo}
                 changeInput = {changeInput}
                 saveEdited = {saveEdited}
             />)
         }
-    </div>)
+                
+
+    </div>
+    )
 }

@@ -1,7 +1,6 @@
 import { Idata } from "../types/data";
 
 interface ITodoItem extends Idata {
-    toggleToDo: (id: number) => void;
     removeToDo: (id: number) => void;
     editToDo: (index: number) => void;
     isEdit: boolean;
@@ -11,10 +10,10 @@ interface ITodoItem extends Idata {
     
 }
     
-export const ToDo: React.FC<ITodoItem> = ({id, value, isComplete,removeToDo,toggleToDo,editToDo,isEdit,changeInput,saveEdited}) => {
+export const ToDo: React.FC<ITodoItem> = ({id, value, isComplete,removeToDo,editToDo,isEdit,changeInput,saveEdited}) => {
 
-    return <div>
-        { isEdit? <input value = {value} onChange = {(e) => changeInput(e,id) }/> : <span>{value}</span> }
+    return<div>
+        { isEdit? <input value = {value} onChange = {(e) => changeInput(e,id) }/> : <input type="text" value={value} /> }
         <button onClick={() => removeToDo(id)}>X</button>
         <button onClick={() => editToDo(id)}>edit</button>
         <button onClick={() => saveEdited(id)}>save edited</button>

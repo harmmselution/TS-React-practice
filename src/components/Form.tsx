@@ -1,14 +1,13 @@
 import { Idata } from "../types/data";
-import {useState, useRef} from "react";
+import {useState} from "react";
 import { ToDoList } from "./TodoList";
-
+import { Tag } from "./Tag";
 export const Form: React.FC = () => {
     const [value, setValue] = useState('');
     const [todos, setTodos] = useState<Idata[]>([]);
-    const inputRef= useRef<HTMLInputElement>(null);
+    const [filtered, setFiltered] = useState(todos);
     const [isShown, setIsShown] = useState(false);
-    
-    
+    const [filterFlag, setFilterFlag] = useState(false);
    const changeInput = (e:React.ChangeEvent<HTMLInputElement>, index: number) => {
         setTodos(todos.map(todo => {
             if(todo.id !== index) return todo;
@@ -31,6 +30,7 @@ export const Form: React.FC = () => {
     const editToDo = (index: number): void => {
        setTodos(todos.map(todo => {
             if(todo.id !== index) return todo;
+        
             return {...todo,
                 isEdit: true}
        }))
@@ -52,15 +52,7 @@ export const Form: React.FC = () => {
             return {...todo,isEdit:false};
         }))
     }
-    const toggleToDo = (id:number): void => {
-        setTodos(todos.map(todo => {
-            if(todo.id !== id) return todo;
-            return {
-                ...todo,
-                isComplete: !todo.isComplete
-            }
-        }))
-    } 
+
     let tags: string[]= [];
     todos
         .map(tag => {
@@ -71,27 +63,36 @@ export const Form: React.FC = () => {
                 tags.push(elem);
             }
             
-            console.log(tags)
         })
       
         return tags;
         })
+        let newTodos = [];
+       const handleClick = (tag: string) => {
+         newTodos = [...todos].filter(item => item.value.includes(tag))
+        setFiltered([...newTodos]);
+        setFilterFlag(true);    
+       }
+       
+      
     return <div>
         <div>
-            <input type="text" value={value} onChange={handleEvent} ref = {inputRef}   />
+            <input type="text" value={value} onChange={handleEvent}    />
                 <button onClick={addToDo}>Add</button>
                 <button onClick={showNotes}>Show/Hide</button>
-           { isShown? <ToDoList items={todos} removeToDo={removeToDo} 
-            toggleToDo={toggleToDo}
+           { isShown ? <ToDoList items={todos} removeToDo={removeToDo} 
             editToDo={editToDo}
             changeInput={changeInput}
             saveEdited = {saveEdited}
-            
-            /> : ''}    
+            filtered = {filtered}
+            filterFlag = {filterFlag}
+            /> : "" }    
         </div>
-        <div>список заметок:</div>
+        <h2>список заметок:</h2>
         <ul>
-                {tags.map(tag => <li>{tag}</li>)}</ul>
+        {tags.map((tag,index) => <Tag tag={tag} id={index} handleClick={() => handleClick(tag)}/>)}
+        <button onClick={() => setFilterFlag(false)}>сбросить фильтр</button>
+        </ul>
     </div>
 
 
