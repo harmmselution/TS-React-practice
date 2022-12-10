@@ -1,6 +1,7 @@
 import React from "react";
 import { Idata } from "../types/data";
 import {ToDo} from "./ToDo";
+
 interface ITodoListProps {
     items: Idata[];
     removeToDo: (id: number) => void;
@@ -12,8 +13,8 @@ interface ITodoListProps {
 }
 
 export const ToDoList: React.FC<ITodoListProps> = ({items,removeToDo,editToDo,changeInput,saveEdited,filtered,filterFlag}) => {
-
-    return (<div>   
+    
+    return (<div >   
         {
            filterFlag?  filtered.map((todo,index) =>  
             <ToDo {...todo} key={todo.id} 
